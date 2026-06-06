@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>New Login Detected</h2>
+<p>Hello,</p>
+<p>We're letting you know that a new sign-in to your Grabber account was just detected from a new device or location.</p>
+
+<div class="info-list">
+    <ul>
+        <li><strong>Date &amp; Time:</strong> {{ time }}</li>
+        <li><strong>IP Address:</strong> {{ ip_address }}</li>
+        <li><strong>Device/Browser:</strong> {{ user_agent }}</li>
+    </ul>
+</div>
+
+<p><strong>Was this you?</strong><br>
+If you recognize this activity, you can safely ignore this email. We just want to make sure your account is secure.</p>
+
+<div class="divider"></div>
+
+<p><strong>Wasn't you?</strong><br>
+If you do not recognize this login attempt, someone else may have accessed your account. We strongly recommend that you change your password immediately.</p>
+
+<div style="text-align: center;">
+    <a href="{{ reset_url | default('https://app.grabber.io/forgot-password') }}" class="btn-primary">Secure My Account</a>
+</div>
+
+<p>Best regards,<br>The Grabber Security Team</p>
+{% endblock %}
