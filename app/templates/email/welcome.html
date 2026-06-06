@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Welcome to Grabber! 🎉</h2>
+<p>Hello,</p>
+<p>Your email has been successfully verified, and your account is now officially active. We are thrilled to welcome you to the Grabber robotics ecosystem.</p>
+<p>With your Grabber account, you can now:</p>
+<ul>
+    <li>Register and pair new robotic devices.</li>
+    <li>Monitor real-time system telemetry and performance.</li>
+    <li>Manage user permissions and fleet settings.</li>
+</ul>
+
+<div style="text-align: center;">
+    <a href="{{ login_url | default('https://app.grabber.io/login') }}" class="btn-primary">Access Your Dashboard</a>
+</div>
+
+<div class="divider"></div>
+
+<p><strong>Getting Started?</strong><br>
+Check out our <a href="#">Quick Start Guide</a> to learn how to connect your first device and explore the dashboard.</p>
+
+<p>Welcome aboard,<br>The Grabber Operations Team</p>
+{% endblock %}
