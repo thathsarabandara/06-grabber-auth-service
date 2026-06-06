@@ -1,5 +1,7 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.api.routes import health, auth, profile, sessions
 from app.core.config import settings
 from app.core.database import engine, Base
@@ -13,6 +15,13 @@ import app.models.login_audit_log
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title=settings.PROJECT_NAME)
+
+# Create uploads directory if it doesn't exist
+UPLOAD_DIR = "uploads/profile_images"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+# Mount static files
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # CORS middleware
 app.add_middleware(
