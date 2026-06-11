@@ -1,8 +1,12 @@
+from typing import Optional
+from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Grabber Auth Service"
-    DATABASE_URL: str = "mysql+pymysql://user:password@localhost/dbname"
+    
+    DATABASE_URL: str
+    
     SECRET_KEY: str = "super-secret-key"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 300 # 5 hours
