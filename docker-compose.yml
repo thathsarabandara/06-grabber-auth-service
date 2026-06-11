@@ -10,3 +10,10 @@ services:
     volumes:
       - .:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    networks:
+      - devops_infra
+
+networks:
+  devops_infra:
+    external: true
+    name: databases_default
