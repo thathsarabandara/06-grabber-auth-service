@@ -51,11 +51,11 @@ class EmailService:
             logger.error(f"Error sending welcome email: {e}")
 
     @staticmethod
-    async def send_password_reset_email(email: str, reset_token: str):
+    async def send_password_reset_email(email: str, reset_url: str):
         message = MessageSchema(
             subject="Password Reset Request - Grabber",
             recipients=[email],
-            template_body={"reset_token": reset_token, "subject": "Password Reset Request"},
+            template_body={"reset_url": reset_url, "subject": "Password Reset Request"},
             subtype=MessageType.html
         )
         try:
