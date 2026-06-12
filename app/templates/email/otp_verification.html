@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Verify your email address</h2>
+<p>Hello,</p>
+<p>Thank you for signing up for Grabber! We're excited to have you on board. To complete your account registration and ensure the security of your account, please verify your email address.</p>
+<p>Enter the following 6-digit verification code in the application:</p>
+
+<div class="otp-box">
+    <p class="otp-code">{{ otp }}</p>
+</div>
+
+<p><em>Please note that this code is only valid for <strong>15 minutes</strong> and can only be used once.</em></p>
+
+<div class="divider"></div>
+
+<p><strong>Didn't request this?</strong><br>
+If you didn't attempt to register an account with Grabber, please disregard this email. Your information is safe and no account will be created.</p>
+
+<p>Best regards,<br>The Grabber Security Team</p>
+{% endblock %}

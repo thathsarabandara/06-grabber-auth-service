@@ -1,12 +1,20 @@
 version: '3.8'
 
 services:
-  api:
+  auth-service:
+    container_name: grabber-auth-service
     build: .
     ports:
-      - "8000:8000"
+      - "8001:8001"
     env_file:
       - .env
     volumes:
       - .:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+    networks:
+      - api_gateway_network
+
+networks:
+  api_gateway_network:
+    external: true
+    name: 05-grabber-api-gateway_default
