@@ -9,7 +9,7 @@ from app.core.security import get_refresh_token_hash
 
 router = APIRouter()
 
-@router.get("/", response_model=List[SessionResponse])
+@router.get("", response_model=List[SessionResponse])
 def get_sessions(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     sessions = db.query(DbSession).filter(
         DbSession.user_id == current_user.id,

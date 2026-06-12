@@ -9,11 +9,11 @@ from app.schemas.user import UserResponse, UserUpdate
 
 router = APIRouter()
 
-@router.get("/me", response_model=UserResponse)
+@router.get("", response_model=UserResponse)
 def get_profile(current_user: User = Depends(get_current_user)):
     return current_user
 
-@router.patch("/me", response_model=UserResponse)
+@router.patch("", response_model=UserResponse)
 def update_profile(
     user_update: UserUpdate,
     db: Session = Depends(get_db),
@@ -27,7 +27,7 @@ def update_profile(
     db.refresh(current_user)
     return current_user
 
-@router.post("/me/image", response_model=UserResponse)
+@router.post("/image", response_model=UserResponse)
 async def upload_profile_image(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
