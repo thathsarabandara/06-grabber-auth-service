@@ -30,6 +30,7 @@ class AuthService:
             first_name=user_data.first_name,
             last_name=user_data.last_name,
             email=user_data.email,
+            phone=user_data.phone,
             password_hash=get_password_hash(user_data.password),
             status=UserStatus.PENDING_VERIFICATION
         )
@@ -166,7 +167,8 @@ class AuthService:
         self.db.add(reset_entry)
         self.db.commit()
 
-        bg_tasks.add_task(EmailService.send_password_reset_email, user.email, reset_token)
+        reset_url = f"http://localhost:5173/auth/reset-password?token={reset_token}"
+        bg_tasks.add_task(EmailService.send_password_reset_email, user.email, reset_url)
 
     def reset_password(self, data: ResetPassword, bg_tasks: BackgroundTasks):
         token_hash = get_reset_token_hash(data.token)
