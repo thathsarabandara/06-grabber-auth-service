@@ -1,7 +1,8 @@
 version: '3.8'
 
 services:
-  api:
+  auth-service:
+    container_name: grabber-auth-service
     build: .
     ports:
       - "8001:8001"
@@ -11,9 +12,9 @@ services:
       - .:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
     networks:
-      - devops_infra
+      - api_gateway_network
 
 networks:
-  devops_infra:
+  api_gateway_network:
     external: true
-    name: databases_default
+    name: 05-grabber-api-gateway_default
