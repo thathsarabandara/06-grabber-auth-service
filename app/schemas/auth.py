@@ -25,6 +25,10 @@ class ResetPassword(BaseModel):
     token: str
     new_password: str = Field(..., min_length=8)
 
+class ChangePassword(BaseModel):
+    old_password: str
+    new_password: str = Field(..., min_length=8)
+
 class SessionResponse(BaseModel):
     id: str
     device_info: Optional[str]

@@ -9,7 +9,7 @@ from app.models.password_reset import PasswordReset
 from app.models.session import Session as DbSession
 from app.models.login_audit_log import LoginAuditLog, AuditAction
 from app.schemas.user import UserCreate
-from app.schemas.auth import LoginRequest, ForgotPassword, ResetPassword
+from app.schemas.auth import LoginRequest, ForgotPassword, ResetPassword, ChangePassword
 from app.core.security import (
     get_password_hash, verify_password, create_access_token,
     generate_otp, get_otp_hash, generate_reset_token, get_reset_token_hash,
@@ -190,6 +190,18 @@ class AuthService:
         self.db.commit()
         
         bg_tasks.add_task(EmailService.send_password_reset_success_email, user.email)
+
+    def change_password(self, user: User, data: ChangePassword):
+        if not verify_password(data.old_password, user.password_hash):
+            raise HTTPException(status_code=400, detail="Invalid previous password")
+
+        user.password_hash = get_password_hash(data.new_password)
+        
+        # Optional: Revoke all other sessions when password changes
+        self.db.query(DbSession).filter(DbSession.user_id == user.id).update({"is_revoked": True})
+        
+        self._log_audit(user.id, AuditAction.PASSWORD_RESET, None, None)
+        self.db.commit()
 
     def _log_audit(self, user_id: str, action: AuditAction, ip_address: str, user_agent: str):
         log = LoginAuditLog(
