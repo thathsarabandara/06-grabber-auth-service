@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
-from fastapi import HTTPException, status, BackgroundTasks
+from fastapi import HTTPException, BackgroundTasks
 from typing import Tuple
 
 from app.models.user import User, UserStatus
@@ -9,7 +9,7 @@ from app.models.password_reset import PasswordReset
 from app.models.session import Session as DbSession
 from app.models.login_audit_log import LoginAuditLog, AuditAction
 from app.schemas.user import UserCreate
-from app.schemas.auth import LoginRequest, ForgotPassword, ResetPassword, ChangePassword
+from app.schemas.auth import LoginRequest, ResetPassword, ChangePassword
 from app.core.security import (
     get_password_hash, verify_password, create_access_token,
     generate_otp, get_otp_hash, generate_reset_token, get_reset_token_hash,
