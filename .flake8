@@ -1,0 +1,10 @@
+[flake8]
+max-line-length = 120
+exclude =
+    .git,
+    __pycache__,
+    authenv,
+    venv,
+    .pytest_cache,
+    uploads
+ignore = E203, W503, E712, E302, E305, W293, W391, E261, E501

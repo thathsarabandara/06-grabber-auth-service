@@ -5,11 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.routes import health, auth, profile, sessions
 from app.core.config import settings
 from app.core.database import engine, Base
-import app.models.user
-import app.models.email_verification
-import app.models.password_reset
-import app.models.session
-import app.models.login_audit_log
+from app.models import user, email_verification, password_reset, session, login_audit_log  # noqa: F401
 
 # Create DB tables
 Base.metadata.create_all(bind=engine)

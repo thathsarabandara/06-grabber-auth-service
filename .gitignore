@@ -18,4 +18,9 @@ venv.bak/
 
 *env
 
-uploads
+uploads/
+test.db
+.coverage
+.pytest_cache/
+htmlcov/
+.cache/

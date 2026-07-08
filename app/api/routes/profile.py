@@ -6,6 +6,8 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user
 from app.models.user import User
 from app.schemas.user import UserResponse, UserUpdate
+from app.schemas.auth import ChangePassword
+from app.services.auth_service import AuthService
 
 router = APIRouter()
 
@@ -58,3 +60,13 @@ async def upload_profile_image(
     db.refresh(current_user)
     
     return current_user
+
+@router.post("/change-password")
+def change_password(
+    data: ChangePassword,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    auth_service = AuthService(db)
+    auth_service.change_password(current_user, data)
+    return {"message": "Password changed successfully"}
