@@ -1,10 +1,19 @@
 import os
-import pytest
-from unittest.mock import AsyncMock, patch
+
+# ── Set ALL required env vars BEFORE any app module is imported ────────────
+# pydantic-settings reads env vars when Settings() is instantiated at import
+# time; if these are set after the import the validator will raise.
+os.environ.setdefault("DATABASE_URL", "sqlite:///./test_temp.db")
+os.environ.setdefault("SECRET_KEY", "test-secret-key-for-ci")
+os.environ.setdefault("ALGORITHM", "HS256")
+
+# ── App imports (must come AFTER env vars are set) ─────────────────────────
+import pytest  # noqa: E402
+from unittest.mock import AsyncMock, patch  # noqa: E402
 from app.main import app  # noqa: E402
 from app.core.database import Base, engine, SessionLocal  # noqa: E402
 from app.api.deps import get_db  # noqa: E402
-os.environ["DATABASE_URL"] = "sqlite:///./test_temp.db"
+
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_db():
@@ -19,17 +28,19 @@ def setup_test_db():
         except Exception:
             pass
 
+
 @pytest.fixture(name="db")
 def db_fixture():
     connection = engine.connect()
     transaction = connection.begin()
     db = SessionLocal(bind=connection)
-    
+
     yield db
-    
+
     db.close()
     transaction.rollback()
     connection.close()
+
 
 @pytest.fixture(name="client")
 def client_fixture(db):
@@ -43,6 +54,7 @@ def client_fixture(db):
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
 
 @pytest.fixture(autouse=True)
 def mock_fastmail():
