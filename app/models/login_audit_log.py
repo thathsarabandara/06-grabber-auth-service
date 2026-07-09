@@ -8,7 +8,7 @@ class AuditAction(str, enum.Enum):
     LOGIN_SUCCESS = "LOGIN_SUCCESS"
     LOGIN_FAILED = "LOGIN_FAILED"
     LOGOUT = "LOGOUT"
-    PASSWORD_RESET = "PASSWORD_RESET"
+    PASSWORD_RESET = "PASSWORD_RESET"  # nosec B105 - enum action name, not a password
 
 class LoginAuditLog(Base):
     __tablename__ = "login_audit_logs"

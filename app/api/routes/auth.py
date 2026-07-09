@@ -43,7 +43,7 @@ def login(request: Request, response: Response, login_data: LoginRequest, bg_tas
         max_age=settings.REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60
     )
     
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}  # nosec B105 - 'bearer' is OAuth2 token_type, not a password
 
 @router.post("/logout")
 def logout(request: Request, response: Response, db: Session = Depends(get_db)):
