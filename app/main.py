@@ -6,6 +6,7 @@ from app.api.routes import health, auth, profile, sessions
 from app.core.config import settings
 from app.core.database import engine, Base
 from app.models import user, email_verification, password_reset, session, login_audit_log  # noqa: F401
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # Create DB tables
 Base.metadata.create_all(bind=engine)
@@ -27,6 +28,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Prometheus Instrumentation
+Instrumentator().instrument(app).expose(app)
 
 app.include_router(health.router, prefix="/api", tags=["health"])
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])

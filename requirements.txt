@@ -12,3 +12,4 @@ alembic>=1.13.1
 python-multipart>=0.0.9
 fastapi-mail>=1.4.1
 aiofiles>=23.2.1
+prometheus-fastapi-instrumentator>=7.0.0
