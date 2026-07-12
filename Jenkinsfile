@@ -4,7 +4,7 @@ pipeline {
     environment {
         GHCR_CREDENTIALS_ID = 'ghcr-credentials'
         GITHUB_USER         = 'thathsarabandara'
-        IMAGE_NAME          = "ghcr.io/${GITHUB_USER}/grabber-auth-service"
+        IMAGE_NAME          = "ghcr.io/${GITHUB_USER}/06-grabber-auth-service"
         IMAGE_TAG           = "${env.BUILD_NUMBER}"
     }
 
@@ -67,11 +67,15 @@ pipeline {
                 sh """
                     docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                     docker tag  ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
+                    docker tag  ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:main
                 """
             }
         }
 
         stage('Push') {
+            when {
+                branch 'main'
+            }
             steps {
                 echo "Pushing to GitHub Container Registry: ${IMAGE_NAME}"
                 withCredentials([usernamePassword(
@@ -83,7 +87,8 @@ pipeline {
                         echo "\${GHCR_TOKEN}" | docker login ghcr.io -u "\${GHCR_USER}" --password-stdin
                         docker push ${IMAGE_NAME}:${IMAGE_TAG}
                         docker push ${IMAGE_NAME}:latest
-                        echo "Pushed ${IMAGE_NAME}:${IMAGE_TAG} and ${IMAGE_NAME}:latest"
+                        docker push ${IMAGE_NAME}:main
+                        echo "Pushed ${IMAGE_NAME}:${IMAGE_TAG}, ${IMAGE_NAME}:latest, and ${IMAGE_NAME}:main"
                     """
                 }
             }
